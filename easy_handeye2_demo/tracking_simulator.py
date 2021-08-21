@@ -30,8 +30,7 @@ class TrackingSimulator(rclpy.node.Node):
         super().__init__('tracking_simulator_node')
 
         # declare and read parameters
-        self.declare_parameter('is_calibration')
-        self.declare_parameter('eye_on_hand')
+        self.declare_parameter('eye_in_hand')
 
         self.declare_parameter('robot_base_frame')
         self.declare_parameter('robot_effector_frame')
@@ -45,8 +44,7 @@ class TrackingSimulator(rclpy.node.Node):
         self.declare_parameter('base_to_tracking')
         self.declare_parameter('hand_to_tracking')
 
-        self.is_calibration = self.get_parameter('is_calibration').get_parameter_value().bool_value
-        self.is_eye_on_hand = self.get_parameter('eye_on_hand').get_parameter_value().bool_value
+        self.is_eye_on_hand = self.get_parameter('eye_in_hand').get_parameter_value().bool_value
 
         self.robot_base_frame = self.get_parameter('robot_base_frame').get_parameter_value().string_value
         self.robot_effector_frame = self.get_parameter('robot_effector_frame').get_parameter_value().string_value
@@ -91,13 +89,6 @@ class TrackingSimulator(rclpy.node.Node):
             transform=arbitrary_marker_placement_transformation)
         self.tfBuffer.set_transform_static(self.arbitrary_transform_msg_stmpd, 'default_authority')
 
-        if self.is_calibration:
-            # publish a dummy calibration for visualization purposes
-            calib_gt_msg_stmpd = TransformStamped(header=Header(frame_id=self.calibration_origin_frame),
-                                                  child_frame_id=self.tracking_base_frame,
-                                                  transform=ground_truth_calibration_transformation)
-            self.tfStaticBroadcaster.sendTransform(calib_gt_msg_stmpd)
-
         # set the ground truth calibration; during demo this allows us to compute the correct tracking output even if the calibration failed
         calib_gt_msg_stmpd = TransformStamped(header=Header(frame_id=self.calibration_origin_frame),
                                               child_frame_id=self.CAMERA_DUMMY_FRAME,
@@ -121,7 +112,7 @@ class TrackingSimulator(rclpy.node.Node):
 
         if not self.tfBuffer.can_transform(self.CAMERA_DUMMY_FRAME, self.MARKER_DUMMY_FRAME, rclpy.time.Time()):
             if self.get_clock().now() - self.last_transform_check > rclpy.time.Duration(seconds=1):
-                self.get_logger().loginfo('Waiting for tf tree to be connected...')
+                self.get_logger().info('Waiting for tf tree to be connected...')
                 self.last_transform_check = self.get_clock().now()
             return
 
