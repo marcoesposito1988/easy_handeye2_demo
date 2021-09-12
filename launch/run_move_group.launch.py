@@ -1,3 +1,5 @@
+# start MoveIt! for the Franka Panda, including RViz
+
 import os
 import yaml
 from launch import LaunchDescription
