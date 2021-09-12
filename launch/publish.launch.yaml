@@ -1,0 +1,10 @@
+launch:
+- arg:
+    name: "eye_on_hand"
+    default: "true"
+- include:
+    file: "$(find-pkg-share easy_handeye2_demo)/launch/robot_and_sim.launch.xml"
+- node:
+    pkg: "easy_handeye2_demo"
+    exec: "tracking_simulator"
+    name: "tracking_simulator"
