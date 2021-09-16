@@ -10,6 +10,7 @@ from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
+    arg_name = DeclareLaunchArgument('name')
     arg_eye_in_hand = DeclareLaunchArgument('eye_in_hand', default_value='True')
     arg_tracking_base_frame = DeclareLaunchArgument('tracking_base_frame', default_value='tracking_origin')
     arg_tracking_marker_frame = DeclareLaunchArgument('tracking_marker_frame', default_value='tracking_marker')
@@ -18,10 +19,7 @@ def generate_launch_description():
 
     include_robot = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(
-                get_package_share_directory('easy_handeye2_demo'),
-                'launch/run_move_group.launch.py'))
-    )
+            os.path.join(get_package_share_directory('easy_handeye2_demo'), 'launch/run_move_group.launch.py')))
 
     node_tracking = Node(
         package='easy_handeye2_demo',
@@ -35,6 +33,7 @@ def generate_launch_description():
             'hand_to_tracking': '0.12 0.21 0.137 0 0 0 1',
             'base_to_tracking': '1 0 0.5 0 0 0 1',
             # calibration arguments
+            'name': LaunchConfiguration('name'),
             'eye_in_hand': LaunchConfiguration('eye_in_hand'),
             'tracking_base_frame': LaunchConfiguration('tracking_base_frame'),
             'tracking_marker_frame': LaunchConfiguration('tracking_marker_frame'),
@@ -44,6 +43,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        arg_name,
         arg_eye_in_hand,
         arg_tracking_base_frame,
         arg_tracking_marker_frame,

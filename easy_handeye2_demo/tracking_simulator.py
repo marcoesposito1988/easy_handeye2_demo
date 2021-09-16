@@ -44,7 +44,7 @@ class TrackingSimulator(rclpy.node.Node):
         self.declare_parameter('base_to_tracking')
         self.declare_parameter('hand_to_tracking')
 
-        self.is_eye_on_hand = self.get_parameter('eye_in_hand').get_parameter_value().bool_value
+        self.is_eye_in_hand = self.get_parameter('eye_in_hand').get_parameter_value().bool_value
 
         self.robot_base_frame = self.get_parameter('robot_base_frame').get_parameter_value().string_value
         self.robot_effector_frame = self.get_parameter('robot_effector_frame').get_parameter_value().string_value
@@ -57,7 +57,7 @@ class TrackingSimulator(rclpy.node.Node):
         self.transl_noise = self.get_parameter('translation_noise_stdev').get_parameter_value().double_value
         self.rot_noise = self.get_parameter('rotation_noise_stdev').get_parameter_value().double_value
 
-        if self.is_eye_on_hand:
+        if self.is_eye_in_hand:
             ground_truth_calibration_transformation = self.parse_transformation(
                 self.get_parameter('hand_to_tracking').get_parameter_value().string_value)
             arbitrary_marker_placement_transformation = self.parse_transformation(
