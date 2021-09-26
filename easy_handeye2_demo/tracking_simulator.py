@@ -87,13 +87,13 @@ class TrackingSimulator(rclpy.node.Node):
             header=Header(frame_id=self.marker_placement_origin_frame, stamp=self.get_clock().now().to_msg()),
             child_frame_id=self.MARKER_DUMMY_FRAME,
             transform=arbitrary_marker_placement_transformation)
-        self.tfBuffer.set_transform_static(self.arbitrary_transform_msg_stmpd, 'default_authority')
+        self.tfBuffer.set_transform_static(self.arbitrary_transform_msg_stmpd, 'tracking_simulator')
 
         # set the ground truth calibration; during demo this allows us to compute the correct tracking output even if the calibration failed
         calib_gt_msg_stmpd = TransformStamped(header=Header(frame_id=self.calibration_origin_frame),
                                               child_frame_id=self.CAMERA_DUMMY_FRAME,
                                               transform=ground_truth_calibration_transformation)
-        self.tfBuffer.set_transform_static(calib_gt_msg_stmpd, 'default_authority')
+        self.tfBuffer.set_transform_static(calib_gt_msg_stmpd, 'tracking_simulator')
 
         # in the loop:
         # - compute the tracking transform by closing the loop
