@@ -53,13 +53,12 @@ def generate_launch_description():
     kinematics_yaml = load_yaml(
         "moveit_resources_panda_moveit_config", "config/kinematics.yaml"
     )
-    robot_description_kinematics = {"robot_description_kinematics": kinematics_yaml}
 
     # Planning Functionality
     ompl_planning_pipeline_config = {
         "move_group": {
             "planning_plugin": "ompl_interface/OMPLPlanner",
-            "request_adapters": """default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""",
+            "request_adapters": """default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/ResolveConstraintFrames default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""",
             "start_state_max_bounds_error": 0.1,
         }
     }
@@ -92,7 +91,7 @@ def generate_launch_description():
     }
 
     # Start the actual move_group node/action server
-    move_group_node = Node(
+    run_move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
@@ -161,11 +160,7 @@ def generate_launch_description():
 
     # Load controllers
     load_controllers = []
-    for controller in [
-        "panda_arm_controller",
-        "panda_hand_controller",
-        "joint_state_controller",
-    ]:
+    for controller in ["panda_arm_controller", "panda_hand_controller", "joint_state_broadcaster"]:
         load_controllers += [
             ExecuteProcess(
                 cmd=["ros2 run controller_manager spawner.py {}".format(controller)],
@@ -179,7 +174,7 @@ def generate_launch_description():
             rviz_node,
             static_tf,
             robot_state_publisher,
-            move_group_node,
+            run_move_group_node,
             ros2_control_node,
         ]
         + load_controllers

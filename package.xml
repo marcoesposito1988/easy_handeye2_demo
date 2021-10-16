@@ -17,6 +17,19 @@
   <test_depend>ament_pep257</test_depend>
   <test_depend>python3-pytest</test_depend>
 
+  <exec_depend>ros-foxy-control-msgs</exec_depend>
+  <exec_depend>ros-foxy-control-toolbox</exec_depend>
+  <exec_depend>ros-foxy-controller-manager</exec_depend>
+  <exec_depend>ros-foxy-gripper-controllers</exec_depend>
+  <exec_depend>ros-foxy-joint-state-broadcaster</exec_depend>
+  <exec_depend>ros-foxy-joint-state-controller</exec_depend>
+  <exec_depend>ros-foxy-joint-state-publisher</exec_depend>
+  <exec_depend>ros-foxy-joint-state-publisher-gui</exec_depend>
+  <exec_depend>ros-foxy-joint-trajectory-controller</exec_depend>
+  <exec_depend>ros-foxy-moveit</exec_depend>
+  <exec_depend>ros-foxy-moveit-resources-panda-moveit-config</exec_depend>
+  <exec_depend>ros-foxy-moveit-runtime</exec_depend>
+
   <export>
     <build_type>ament_python</build_type>
   </export>
