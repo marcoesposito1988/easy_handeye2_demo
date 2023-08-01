@@ -19,6 +19,7 @@
 
 import rclpy
 import rclpy.time
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import ParameterType, ParameterDescriptor
 import tf2_ros
 import numpy as np
@@ -150,10 +151,12 @@ def main(args=None):
 
     tracking_simulator = TrackingSimulator()
 
-    rclpy.spin(tracking_simulator)
-
-    tracking_simulator.destroy_node()
-    rclpy.shutdown()
+    try:
+        rclpy.spin(tracking_simulator)
+    except (KeyboardInterrupt, ExternalShutdownException):
+        pass
+    finally:
+        tracking_simulator.destroy_node()
 
 
 if __name__ == '__main__':
