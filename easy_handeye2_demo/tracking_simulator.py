@@ -19,6 +19,7 @@
 
 import rclpy
 import rclpy.time
+from rclpy.node import ParameterType, ParameterDescriptor
 import tf2_ros
 import numpy as np
 from std_msgs.msg import Header
@@ -30,21 +31,21 @@ class TrackingSimulator(rclpy.node.Node):
         super().__init__('tracking_simulator_node')
 
         # declare and read parameters
-        self.declare_parameter('eye_in_hand')
+        self.declare_parameter('calibration_type', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
 
-        self.declare_parameter('robot_base_frame')
-        self.declare_parameter('robot_effector_frame')
-        self.declare_parameter('tracking_base_frame')
-        self.declare_parameter('tracking_marker_frame')
+        self.declare_parameter('robot_base_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
+        self.declare_parameter('robot_effector_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
+        self.declare_parameter('tracking_base_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
+        self.declare_parameter('tracking_marker_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
 
-        self.declare_parameter('frequency')
-        self.declare_parameter('translation_noise_stdev')
-        self.declare_parameter('rotation_noise_stdev')
+        self.declare_parameter('frequency', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_DOUBLE))
+        self.declare_parameter('translation_noise_stdev', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_DOUBLE))
+        self.declare_parameter('rotation_noise_stdev', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_DOUBLE))
 
-        self.declare_parameter('base_to_tracking')
-        self.declare_parameter('hand_to_tracking')
+        self.declare_parameter('base_to_tracking', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
+        self.declare_parameter('hand_to_tracking', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
 
-        self.is_eye_in_hand = self.get_parameter('eye_in_hand').get_parameter_value().bool_value
+        self.is_eye_in_hand = self.get_parameter('calibration_type').get_parameter_value().string_value == 'eye_in_hand'
 
         self.robot_base_frame = self.get_parameter('robot_base_frame').get_parameter_value().string_value
         self.robot_effector_frame = self.get_parameter('robot_effector_frame').get_parameter_value().string_value
@@ -53,7 +54,7 @@ class TrackingSimulator(rclpy.node.Node):
         self.CAMERA_DUMMY_FRAME = self.tracking_base_frame + '_gt'
         self.MARKER_DUMMY_FRAME = self.tracking_marker_frame + '_gt'
 
-        self.frequency = self.get_parameter('frequency').get_parameter_value().integer_value
+        self.frequency = self.get_parameter('frequency').get_parameter_value().double_value
         self.transl_noise = self.get_parameter('translation_noise_stdev').get_parameter_value().double_value
         self.rot_noise = self.get_parameter('rotation_noise_stdev').get_parameter_value().double_value
 
