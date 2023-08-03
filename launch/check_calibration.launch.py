@@ -33,6 +33,12 @@ def generate_launch_description():
             'name': name,
         }.items())
 
+    incl_easy_handeye_evaluate = IncludeLaunchDescription(PythonLaunchDescriptionSource(
+        os.path.join(get_package_share_directory('easy_handeye2'), 'launch', 'evaluate.launch.py')),
+        launch_arguments={
+            'name': name,
+        }.items())
+
     return LaunchDescription([
         arg_calibration_type,
         arg_tracking_base_frame,
@@ -41,4 +47,5 @@ def generate_launch_description():
         arg_robot_effector_frame,
         incl_simulators,
         incl_easy_handeye_publish,
+        incl_easy_handeye_evaluate,
     ])
