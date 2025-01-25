@@ -25,9 +25,9 @@ def generate_launch_description():
         name='tracking_simulator',
         parameters=[{
             # simulator arguments
-            'frequency': 10.0,
-            'translation_noise_stdev': 0.001,
-            'rotation_noise_stdev': 0.0001,
+            # 'frequency': 10.0,
+            # 'translation_noise_stdev': 0.001,
+            # 'rotation_noise_stdev': 0.0001,
             'hand_to_tracking': '0.12 0.21 0.137 0 0 0 1',
             'base_to_tracking': '1 0 0.5 0 0 0 1',
             # calibration arguments

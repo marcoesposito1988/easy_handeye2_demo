@@ -7,9 +7,14 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
 
-from easy_handeye2.common_launch import arg_calibration_type, arg_tracking_base_frame, arg_tracking_marker_frame, arg_robot_base_frame, \
-    arg_robot_effector_frame
+from easy_handeye2.common_launch import arg_calibration_type
 
+# hardcode demo data
+
+tracking_base_frame='tracking_base_frame'
+tracking_marker_frame='tracking_marker_frame'
+robot_base_frame='panda_link0'
+robot_effector_frame='panda_link8'
 
 def generate_launch_description():
 
@@ -22,10 +27,10 @@ def generate_launch_description():
         launch_arguments={
             'name': name,
             'calibration_type': LaunchConfiguration('calibration_type'),
-            'tracking_base_frame': LaunchConfiguration('tracking_base_frame'),
-            'tracking_marker_frame': LaunchConfiguration('tracking_marker_frame'),
-            'robot_base_frame': LaunchConfiguration('robot_base_frame'),
-            'robot_effector_frame': LaunchConfiguration('robot_effector_frame'),
+            'tracking_base_frame': tracking_base_frame,
+            'tracking_marker_frame': tracking_marker_frame,
+            'robot_base_frame': robot_base_frame,
+            'robot_effector_frame': robot_effector_frame,
         }.items())
 
     incl_easy_handeye_calibrate = IncludeLaunchDescription(PythonLaunchDescriptionSource(
@@ -33,18 +38,14 @@ def generate_launch_description():
         launch_arguments={
             'name': name,
             'calibration_type': LaunchConfiguration('calibration_type'),
-            'tracking_base_frame': LaunchConfiguration('tracking_base_frame'),
-            'tracking_marker_frame': LaunchConfiguration('tracking_marker_frame'),
-            'robot_base_frame': LaunchConfiguration('robot_base_frame'),
-            'robot_effector_frame': LaunchConfiguration('robot_effector_frame'),
+            'tracking_base_frame': tracking_base_frame,
+            'tracking_marker_frame': tracking_marker_frame,
+            'robot_base_frame': robot_base_frame,
+            'robot_effector_frame': robot_effector_frame,
         }.items())
 
     return LaunchDescription([
         arg_calibration_type,
-        arg_tracking_base_frame,
-        arg_tracking_marker_frame,
-        arg_robot_base_frame,
-        arg_robot_effector_frame,
         incl_simulators,
         incl_easy_handeye_calibrate,
     ])

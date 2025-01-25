@@ -32,19 +32,19 @@ class TrackingSimulator(rclpy.node.Node):
         super().__init__('tracking_simulator_node')
 
         # declare and read parameters
-        self.declare_parameter('calibration_type', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
+        self.declare_parameter('calibration_type', '')
 
-        self.declare_parameter('robot_base_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
-        self.declare_parameter('robot_effector_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
-        self.declare_parameter('tracking_base_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
-        self.declare_parameter('tracking_marker_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
+        self.declare_parameter('robot_base_frame', '')
+        self.declare_parameter('robot_effector_frame', '')
+        self.declare_parameter('tracking_base_frame', '')
+        self.declare_parameter('tracking_marker_frame', '')
 
-        self.declare_parameter('frequency', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_DOUBLE))
-        self.declare_parameter('translation_noise_stdev', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_DOUBLE))
-        self.declare_parameter('rotation_noise_stdev', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_DOUBLE))
+        self.declare_parameter('frequency', 10.0)
+        self.declare_parameter('translation_noise_stdev', 0.001)
+        self.declare_parameter('rotation_noise_stdev', 0.0001)
 
-        self.declare_parameter('base_to_tracking', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
-        self.declare_parameter('hand_to_tracking', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
+        self.declare_parameter('base_to_tracking', '')
+        self.declare_parameter('hand_to_tracking', '')
 
         self.is_eye_in_hand = self.get_parameter('calibration_type').get_parameter_value().string_value == 'eye_in_hand'
 
