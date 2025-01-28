@@ -40,7 +40,7 @@ class TrackingSimulator(rclpy.node.Node):
         self.declare_parameter('tracking_marker_frame', '')
 
         self.declare_parameter('frequency', 10.0)
-        self.declare_parameter('translation_noise_stdev', 0.001)
+        self.declare_parameter('translation_noise_stdev', 0.0001)
         self.declare_parameter('rotation_noise_stdev', 0.0001)
 
         self.declare_parameter('base_to_tracking', '')
