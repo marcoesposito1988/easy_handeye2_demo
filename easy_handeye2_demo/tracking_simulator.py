@@ -20,7 +20,6 @@
 import rclpy
 import rclpy.time
 from rclpy.executors import ExternalShutdownException
-from rclpy.node import ParameterType, ParameterDescriptor
 import tf2_ros
 import numpy as np
 from std_msgs.msg import Header
@@ -32,21 +31,27 @@ class TrackingSimulator(rclpy.node.Node):
         super().__init__('tracking_simulator_node')
 
         # declare and read parameters
-        self.declare_parameter('calibration_type', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
+        self.declare_parameter('calibration_type', '')
 
-        self.declare_parameter('robot_base_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
-        self.declare_parameter('robot_effector_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
-        self.declare_parameter('tracking_base_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
-        self.declare_parameter('tracking_marker_frame', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
+        self.declare_parameter('robot_base_frame', '')
+        self.declare_parameter('robot_effector_frame', '')
+        self.declare_parameter('tracking_base_frame', '')
+        self.declare_parameter('tracking_marker_frame', '')
 
-        self.declare_parameter('frequency', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_DOUBLE))
-        self.declare_parameter('translation_noise_stdev', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_DOUBLE))
-        self.declare_parameter('rotation_noise_stdev', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_DOUBLE))
+        self.declare_parameter('frequency', 25.0)
+        self.declare_parameter('translation_noise_stdev', 0.001)
+        self.declare_parameter('rotation_noise_stdev', 0.0001)
 
-        self.declare_parameter('base_to_tracking', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
-        self.declare_parameter('hand_to_tracking', descriptor=ParameterDescriptor(type=ParameterType.PARAMETER_STRING))
+        self.declare_parameter('base_to_tracking', '0.12 0.21 0.137 0 0 0 1')
+        self.declare_parameter('hand_to_tracking', '1 0 0.5 0 0 0 1')
 
-        self.is_eye_in_hand = self.get_parameter('calibration_type').get_parameter_value().string_value == 'eye_in_hand'
+        calibration_type = self.get_parameter('calibration_type').get_parameter_value().string_value
+        if calibration_type == 'eye_in_hand':
+            self.is_eye_in_hand = True
+        elif calibration_type == 'eye_on_base':
+            self.is_eye_in_hand = False
+        else:
+            raise ValueError('The calibration type must be eye_in_hand or eye_on_base')
 
         self.robot_base_frame = self.get_parameter('robot_base_frame').get_parameter_value().string_value
         self.robot_effector_frame = self.get_parameter('robot_effector_frame').get_parameter_value().string_value
