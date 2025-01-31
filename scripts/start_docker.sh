@@ -12,4 +12,6 @@ docker_image="moveit/moveit2:${ros_distro}-release"
 
 echo "Pulling and using docker image ${docker_image}"
 
-rocker --nvidia --x11 --user --pull ${docker_image}
+rocker --nvidia --x11 --user --pull "${docker_image}"
+
+# now you can use setup_workspace.sh and run_test.sh

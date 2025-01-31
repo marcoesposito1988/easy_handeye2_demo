@@ -19,5 +19,5 @@ sudo apt install python3-pip
 rosdep update
 PIP_BREAK_SYSTEM_PACKAGES=1 rosdep install -yir --from-paths src
 
-colcon build --merge-install
+colcon build
 
