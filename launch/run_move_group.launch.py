@@ -34,7 +34,7 @@ def generate_launch_description():
         executable="rviz2",
         name="rviz2",
         output="log",
-        arguments=["-d", rviz_full_config],
+        arguments=["-d", rviz_full_config, "--ros-args", "--log-level", "warn"],
         parameters=[
             moveit_config.robot_description,
             moveit_config.robot_description_semantic,
